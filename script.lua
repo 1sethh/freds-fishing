@@ -4,4 +4,4 @@ getgenv().config = {
     ["FPS"] = 10;
 };
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/1sethh/freds-fisher/main/src.lua", true))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/1sethh/freds-fishing/main/src.lua", true))();
