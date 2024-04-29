@@ -1,5 +1,7 @@
 local init = {};
 
+print("Ran");
+
 function init:Teleport(X, Y, Z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(X, Y, Z);
 end;
