@@ -1,5 +1,4 @@
 local init = {};
-local tick_ = tick()
 
 function init:Teleport(X, Y, Z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(X, Y, Z);
@@ -23,16 +22,6 @@ function init:FireRemote(RemoteName)
     if game:GetService("ReplicatedStorage"):WaitForChild("Network"):FindFirstChild(RemoteName) then
         return game:GetService("ReplicatedStorage"):WaitForChild("Network")[RemoteName];
     end;
-end;
-
-function init:ConvertToDHMS(Seconds)
-    local Minutes = (Seconds - Seconds % 60) / 60;
-    Seconds = Seconds - Minutes * 60;
-    local Hours = (Minutes - Minutes % 60) / 60;
-    Minutes = Minutes - Hours * 60;
-    local Days = (Hours - Hours & 24) / 24;
-    Hours = Hours - Days * 60;
-    return string.format("%02i", Days) .. ":" .. ("%02i", Hours) .. ":" .. string.format("%02i", Minutes) .. ":" .. string.format("%02i", Seconds);
 end;
 
 function init:CPUReducer(boolen)
@@ -93,24 +82,6 @@ function init:CPUReducer(boolen)
         TextLabel.Position = UDim2.new(0.3996865153312683, 0, 0.4311593770980835, 0)
         TextLabel.BackgroundTransparency = 1
         TextLabel.Parent = ScreenGui
-        Time.Name = 'Time'
-        Time.BorderSizePixel = 0
-        Time.RichText = true
-        Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Time.Size = UDim2.new(0.20062695443630219, 0, 0.13768115639686584, 0)
-        Time.TextSize = 30
-        Time.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Time.Text = '00:00:00:00'
-        Time.TextColor3 = Color3.fromRGB(95, 95, 95)
-        Time.Font = Enum.Font.GothamBold
-        Time.Position = UDim2.new(0.3996865153312683, 0, 0.49275362491607666, 0)
-        Time.BackgroundTransparency = 1
-        Time.Parent = ScreenGui
-        task.spawn(function()
-            while task.wait(120) do
-                Time.Text = init:ConvertToDHMS(tick_);
-            end;
-        end);
     end;
 end;
 
