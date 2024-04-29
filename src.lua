@@ -1,6 +1,6 @@
 -- // Auto Fish Farm PS99
 -- // @s8th.
--- // v2.2 ; Fixed all bugs + Optimized Code
+-- // v2.25 ; Fixed getgenv errors (forgot to add checks lol)
 
 if getgenv().__ENABLED then return; end; getgenv().__ENABLED = true;
 local tick_ = tick();
@@ -59,41 +59,44 @@ elseif config.FishingArea == 2 then
     end);
 end;
 
-for i, v in next, game:GetDescendants() do
-    if v:IsA("MeshPart") then
-        v.MeshId = "";
+setfpscap(config.FPS);
+if config.CPUSaver then
+    for i, v in next, game:GetDescendants() do
+        if v:IsA("MeshPart") then
+            v.MeshId = "";
+        end;
+        if v:IsA("BasePart") or v:IsA("MeshPart") then
+            v.Transparency = 1;
+        end;
+        if v:IsA("Texture") or v:IsA("Decal") then
+            v.Texture = "";
+        end;
+        if v:IsA("ParticleEmitter") then
+            v.Lifetime = NumberRange.new(0);
+            v.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)});
+            v.Enabled = false;
+        end;
+        if v:IsA("BillboardGui") or v:IsA("SurfaceGui") or v:IsA("Trail") or v:IsA("Beam") then
+            v.Enabled = false;
+        end;
+        if v:IsA("Highlight") then
+            v.OutlineTransparency = 1;
+            v.FillTransparency = 1;
+        end;
     end;
-    if v:IsA("BasePart") or v:IsA("MeshPart") then
-        v.Transparency = 1;
+    for i, v in next, game:GetService("Players"):GetPlayers() do
+        if v.Name ~= game:GetService("Players").LocalPlayer.Name then
+            game:GetService("Workspace"):FindFirstChild(v.Name):Destroy();
+        end;
     end;
-    if v:IsA("Texture") or v:IsA("Decal") then
-        v.Texture = "";
-    end;
-    if v:IsA("ParticleEmitter") then
-        v.Lifetime = NumberRange.new(0);
-        v.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)});
-        v.Enabled = false;
-    end;
-    if v:IsA("BillboardGui") or v:IsA("SurfaceGui") or v:IsA("Trail") or v:IsA("Beam") then
-        v.Enabled = false;
-    end;
-    if v:IsA("Highlight") then
-        v.OutlineTransparency = 1;
-        v.FillTransparency = 1;
-    end;
+    game:GetService("Players").PlayerAdded:Connect(function(Player)
+        game:GetService("Workspace"):WaitForChild(Player.Name):Destroy();
+    end);
+    game:GetService("RunService"):Set3dRenderingEnabled(false);
+    local ScreenGui = Instance.new("ScreenGui");local Frame = Instance.new("Frame");local TextLabel = Instance.new("TextLabel");local Time = Instance.new("TextLabel");ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;ScreenGui.Parent = game:GetService("CoreGui");Frame.Size = UDim2.new(1.7095088958740234, 0, 1.9278595447540283, 0);Frame.BorderColor3 = Color3.fromRGB(0, 0, 0);Frame.Position = UDim2.new(-0.445141077041626, 0, -0.46497583389282227, 0);Frame.BorderSizePixel = 0;Frame.BackgroundColor3 = Color3.fromRGB(27, 27, 27);Frame.Parent = ScreenGui;TextLabel.BorderSizePixel = 0;TextLabel.RichText = true;TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255);TextLabel.Size = UDim2.new(0.20062695443630219, 0, 0.13768115639686584, 0);TextLabel.TextSize = 30;TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0);TextLabel.Text = "Fred\'s Fishing v2";TextLabel.TextColor3 = Color3.fromRGB(95, 95, 95);TextLabel.Font = Enum.Font.GothamBold;TextLabel.Position = UDim2.new(0.3996865153312683, 0, 0.4311593770980835, 0);TextLabel.BackgroundTransparency = 1;TextLabel.Parent = ScreenGui;Time.Name = "Time";Time.BorderSizePixel = 0;Time.RichText = true;Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255);Time.Size = UDim2.new(0.20062695443630219, 0, 0.13768115639686584, 0);Time.TextSize = 30;Time.BorderColor3 = Color3.fromRGB(0, 0, 0);Time.Text = "00:00:00:00";Time.TextColor3 = Color3.fromRGB(95, 95, 95);Time.Font = Enum.Font.GothamBold;Time.Position = UDim2.new(0.3996865153312683, 0, 0.49275362491607666, 0);Time.BackgroundTransparency = 1;Time.Parent = ScreenGui;
+    task.spawn(function()
+        while task.wait() do
+            Time.Text = ConvertToDHMS(tick() - tick_);
+        end;
+    end);
 end;
-for i, v in next, game:GetService("Players"):GetPlayers() do
-    if v.Name ~= game:GetService("Players").LocalPlayer.Name then
-        game:GetService("Workspace"):FindFirstChild(v.Name):Destroy();
-    end;
-end;
-game:GetService("Players").PlayerAdded:Connect(function(Player)
-    game:GetService("Workspace"):WaitForChild(Player.Name):Destroy();
-end);
-game:GetService("RunService"):Set3dRenderingEnabled(false);
-local ScreenGui = Instance.new("ScreenGui");local Frame = Instance.new("Frame");local TextLabel = Instance.new("TextLabel");local Time = Instance.new("TextLabel");ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;ScreenGui.Parent = game:GetService("CoreGui");Frame.Size = UDim2.new(1.7095088958740234, 0, 1.9278595447540283, 0);Frame.BorderColor3 = Color3.fromRGB(0, 0, 0);Frame.Position = UDim2.new(-0.445141077041626, 0, -0.46497583389282227, 0);Frame.BorderSizePixel = 0;Frame.BackgroundColor3 = Color3.fromRGB(27, 27, 27);Frame.Parent = ScreenGui;TextLabel.BorderSizePixel = 0;TextLabel.RichText = true;TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255);TextLabel.Size = UDim2.new(0.20062695443630219, 0, 0.13768115639686584, 0);TextLabel.TextSize = 30;TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0);TextLabel.Text = "Fred\'s Fishing v2";TextLabel.TextColor3 = Color3.fromRGB(95, 95, 95);TextLabel.Font = Enum.Font.GothamBold;TextLabel.Position = UDim2.new(0.3996865153312683, 0, 0.4311593770980835, 0);TextLabel.BackgroundTransparency = 1;TextLabel.Parent = ScreenGui;Time.Name = "Time";Time.BorderSizePixel = 0;Time.RichText = true;Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255);Time.Size = UDim2.new(0.20062695443630219, 0, 0.13768115639686584, 0);Time.TextSize = 30;Time.BorderColor3 = Color3.fromRGB(0, 0, 0);Time.Text = "00:00:00:00";Time.TextColor3 = Color3.fromRGB(95, 95, 95);Time.Font = Enum.Font.GothamBold;Time.Position = UDim2.new(0.3996865153312683, 0, 0.49275362491607666, 0);Time.BackgroundTransparency = 1;Time.Parent = ScreenGui;
-task.spawn(function()
-    while task.wait() do
-        Time.Text = ConvertToDHMS(tick() - tick_);
-    end;
-end);
