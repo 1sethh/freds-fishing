@@ -1,5 +1,5 @@
 getgenv().config = {
-    ["FishingArea"] = 1; -- 1 = Area 27, 2 = Area 92, 3 = Area 92 + Deep Pool
+    ["FishingArea"] = 1; -- 1 = Area 27, 2 = Area 92 + Deep Pool (IF UNLOCKED)
     ["CPUReducer"] = true;
     ["FPS"] = 10;
 };
