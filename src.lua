@@ -60,7 +60,7 @@ elseif config.FishingArea == 2 then
 end;
 
 setfpscap(config.FPS);
-if config.CPUSaver then
+if config.CPUReducer then
     for i, v in next, game:GetDescendants() do
         if v:IsA("MeshPart") then
             v.MeshId = "";
